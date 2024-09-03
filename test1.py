@@ -1,16 +1,14 @@
 import os
 from dotenv import load_dotenv
 import requests
-import chromadb
 import json
-import os
-import re   # 정규표현식 활용
-from dotenv import load_dotenv
-import pandas as pd   # 데이터 처리
-from langchain_community.document_loaders import TextLoader   # txt 파일 load
+from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from sentence_transformers import SentenceTransformer
+import chromadb
+from tqdm import tqdm
 
-#%%
+
 # .env 파일에서 API 키와 URL 가져오기
 load_dotenv()
 api_key = os.getenv("API_KEY")
@@ -51,13 +49,6 @@ def fetch_data():
 if __name__ == "__main__":
     fetch_data()
 
-
-#%%
-from langchain_community.document_loaders import TextLoader   # txt 파일 load
-from tqdm import tqdm
-import pandas as pd
-
-#%%
 loader = TextLoader("./data/적금 리스트.txt", encoding='utf-8')
 api_data = loader.load()
 
@@ -73,7 +64,6 @@ answers = client.create_collection(
     name="answers"
 )
 #모델 불러오기
-from sentence_transformers import SentenceTransformer
 model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
 
 #데이터 삽입
